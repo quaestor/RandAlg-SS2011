@@ -1,0 +1,181 @@
+\documentclass[a4paper]{scrartcl}
+\pagestyle{plain}
+\usepackage{a4wide}
+\usepackage[ngerman]{babel}
+\usepackage{tikz}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage[colorlinks=true,linkcolor=black]{hyperref}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usetikzlibrary{automata}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{positioning}
+\usepackage{dsfont}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{algorithmic}
+\usepackage{color}
+\usepackage{scrpage2}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%\usepackage[math,light]{anttor}
+\usepackage{textcomp}
+\usepackage{etoolbox}
+
+% Pretty captions!
+%\usepackage{caption}
+%\DeclareCaptionFont{white}{\color{white}}
+%\DeclareCaptionFormat{listing}{\colorbox{gray}{\parbox{0.98\linewidth}{#1#2#3}}}
+%\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+% Pretty page headings!
+\pagestyle{scrheadings}
+\clearscrheadings
+\clearscrplain
+\setfootwidth{head}
+\ofoot{\pagemark}
+
+\makeatletter
+% Different format for headings
+\def\section{\@startsection{section}{1}%
+  \z@{.7\baselineskip\@plus\baselineskip}{.5\baselineskip}%
+  {\normalfont\Large\scshape\centering}}
+% This does spacing around caption.
+\setlength{\abovecaptionskip}{0.5em}
+\setlength{\belowcaptionskip}{0.5em}
+% This does justification (left) of caption.
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \sbox\@tempboxa{#2}%
+  \ifdim \wd\@tempboxa >\hsize
+    #2\par
+  \else
+    \global \@minipagefalse
+    \hb@xt@\hsize{\box\@tempboxa\hfill}%
+  \fi
+  \vskip\belowcaptionskip}
+\providerobustcmd*{\bigcupdot}{%
+  \mathop{%
+    \mathpalette\bigop@dot\bigcup
+  }%
+}
+\newrobustcmd*{\bigop@dot}[2]{%
+  \setbox0=\hbox{$\m@th#1#2$}%
+  \vbox{%
+    \lineskiplimit=\maxdimen
+    \lineskip=-0.7\dimexpr\ht0+\dp0\relax
+    \ialign{%
+      \hfil##\hfil\cr
+      $\m@th\cdot$\cr
+      \box0\cr
+    }%
+  }%
+}
+\makeatother
+
+\setkomafont{title}{\normalfont}
+\setkomafont{pageheadfoot}{\normalfont}
+\setkomafont{pagenumber}{\normalfont\scshape}
+\setkomafont{disposition}{\normalfont\bfseries}
+
+\widowpenalty=300
+\clubpenalty=300
+
+\newtheorem*{defn}{Definition}
+\newtheorem*{exmp}{Beispiel}
+\newtheorem*{satz}{Satz}
+\newtheorem*{lemm}{Lemma}
+
+\title{Randomisierte Algorithmen\\
+       Sommersemester 2011 \\
+       \small Mitschrift der Tafelanschrift von Prof. Wanka}
+
+\begin{document}
+\setcounter{section}{5}
+\ohead{7. Juli 2011}
+\section{Counting und die Monte-Carlo-Methode}
+Wichtig: Stichproben ziehen, Sampling
+\subsection{Kombinatorische Zählprobleme und $\#P$-Vollständigkeit}
+\begin{defn}
+	Bei einem kombinatorischen Zählproblem $\#\Pi$ ist ein "`normales"'
+	kombinatorisches Optimierungsproblem $\Pi$ gegeben. Die Aufgabe besteht
+	darin, die Anzahl $\#(I)$ der zur Eingabe $I$ gehörenden zulässigen
+	Lösungen zu bestimmen.
+\end{defn}
+\begin{exmp}
+	$\text{COL}_k$ ist das kombinatorische Optimierungsproblem, eine
+	Färbung des Eingabe-Graphen mit möglichst wenigen Farben zu bestimmen,
+	wobei höchstens $k$ Farben zulässig sind.
+
+	$\#\text{COL}_k$ ist die Anzahl der zulässigen Färbungen (nicht der optimalen).
+\end{exmp}
+\begin{defn}
+	\begin{enumerate}[(a)]
+		\item	$\#\text{DNF}$: Probleminstanz $\Psi$ ist eine
+			Boolessche Formel in Disjunkter Normalform über den
+			Variablen $V = \{x_1, \dots, x_n\}$, d.h. $\Psi = C_1
+			\vee C_2 \vee \dots \vee C_m$, und die $C_i$ sind
+			Monome, d.h. "`Ver-UND-ungen"' von Literalen. Eine
+			zulässige Belegung ist eine Belegung der Variablen, die
+			$\Psi$ erfüllt. Gesucht ist die Anzahl der erfüllenden
+			Belegungen.
+		\item	$\#\text{COL}_k$ (exakte Def. später)
+	\end{enumerate}
+\end{defn}
+\begin{defn}
+	Die Komplexitätsklasse $\#\text{P}$ ist die Menge der kombinatorischen
+	Zählprobleme, für die es je Eingabe höchstens polynomiell viele
+	akzeptierende Rechnungen einer nicht-de\-ter\-mi\-nis\-tischen
+	Turingmaschine gibt.
+\end{defn}
+$\#\text{DNF}$ ist $\#\text{P}$-vollständig.
+\subsection{Relative Gütegarantie, die Expansion und die Wahl des Universums}
+Ein Approximationsalgorithmus $\mathcal{A}$ für $\#\Pi$ hat bei Eingabe $I$ die
+\textit{individuelle relative Güte}
+\[ \rho_\mathcal{A}(I) = \max\left\{ \frac{\mathcal{A}(I)}{\#(I)},
+\frac{\#(I)}{\mathcal{A}(I)} \right\}. \]
+\begin{defn}
+	Sei $I$ eine Eingabe von $\#\Pi$. Die Menge der zulässigen Lösungen sei
+	$S(I)$ (d.h. gesucht ist $\#(I) = |S(I)|$). Sei $U_I$ eine Menge mit
+	$S(I) \subseteq U_I$. $U_I$ wird \textit{Universum} von $S(I)$ genannt.
+	Sei $\xi = \frac{|U_I|}{|S(I)|}$ das Verhältnis der beiden
+	Kardinalitäten. $\xi$ ist die \textit{Expansion} des Universums.
+\end{defn}
+\begin{satz}
+	Sei $s$ eine Zahl mit $\xi \leq s$. Dann approximiert $\mathcal{A}(I) =
+	\frac{|U_I|}{\sqrt{s}}$ den gesuchten Wert $\#(I)$ mit relativer Güte
+	$\sqrt{s}$.
+\end{satz}
+$\#\text{DNF}$: Zwei wichtige Eigenschaften
+\begin{enumerate}[(1)]
+	\item Wir können erfüllende Belegungen ganz einfach finden, da es
+		ausreicht, ein Monom zu erfüllen.
+	\item Wir können für ein Monom $C$ die Zahl $\#(C)$ unmittelbar
+		berechnen.
+\end{enumerate}
+\begin{lemm}
+	Sei $C = l_1 \wedge \dots \wedge l_k$ ein Monom der DNF $\Psi$ über $n$
+	Variablen.
+	Dann gibt es genau $2^{n-k}$ Belegungen, die $C$ erfüllen, d.h. $\#(C) =
+	2^{n-k}$.
+\end{lemm}
+Sei $k^*$ die Länge des kürzesten Monoms in $\Psi$: $\#(\Psi) \geq 2^{n-k^*}$
+\[ U_\Psi^{\text{blind}} = \left\{ u\,|\,u \text{ ist eine Belegung der
+Variablen} \right\}; \quad \left|U_\Psi^{\text{blind}}\right| = 2^n \]
+\[ \xi_{\text{blind}} = \frac{\left|U_\Psi^{\text{blind}}\right|}{\#(\Psi)} \leq \frac{2^n}{2^{n-k^*}} = 2^{k^*} \]
+\[ \mathcal{A}_1(\Psi) = \frac{2^n}{\sqrt{2^{k^*}}} = 2^{n-k^*/2} \]
+\[ \Psi_{\text{bad}} = x_1 \wedge x_2 \wedge \dots \wedge x_{n/2} \quad \quad
+k^* = \frac{n}{2} \quad \quad \#(\Psi_{\text{bad}}) = 2^{n/2} \quad \quad
+\xi_{\text{blind}} = 2^{n/2} \]
+\[ \mathcal{A}_1(\Psi_{\text{bad}}) = 2^{\frac{3}{4}n}, \quad \text{Abweichung: }\,2^{n/4} \]
+\begin{eqnarray*}
+	S(\Psi) = & \bigcup_{j=1}^{m} \left\{ u\,|\,u \text{ erfüllt } C_j
+	\right\} & = \bigcup_{j=1}^{m} \left\{ u\,|\,u \text{ erfüllt } C_j,
+	\text{ aber kein } C_k \text{ mit } k < j \right\} \\
+	S'(\Psi) = & \dots & = \bigcup_{j=1}^{m} \left\{ (u, j)\,|\,u \text{ erfüllt } C_j,
+	\text{ aber kein } C_k \text{ mit } k < j \right\}
+\end{eqnarray*}
+\[ \#(\Psi) = |S(\Psi)| = |S'(\Psi)| \]
+\[ U_{\Psi}^{\text{clever}} = \left\{ u\,|\,u \text{ macht } C_j \text{ wahr} \right\} =
+\bigcupdot_{j=1}^{m} \left\{ (u, j)\,|\,u \text{ macht } C_j \text{ wahr} \right\} \]
+\end{document}
