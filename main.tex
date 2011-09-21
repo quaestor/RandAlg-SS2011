@@ -13,7 +13,8 @@
 \usetikzlibrary{positioning}
 \usepackage{dsfont}
 \usepackage{amsmath, amsthm, amssymb}
-\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{color}
 \usepackage{scrpage2}
 \usepackage[T1]{fontenc}
@@ -86,11 +87,15 @@
 \newtheorem*{satz}{Satz}
 \newtheorem*{lemm}{Lemma}
 
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
 \title{Randomisierte Algorithmen\\
        Sommersemester 2011 \\
        \small Mitschrift der Tafelanschrift von Prof. Wanka}
 
 \begin{document}
+\include{kapitel1}
 \setcounter{section}{5}
 \ohead{7. Juli 2011}
 \section{Counting und die Monte-Carlo-Methode}
