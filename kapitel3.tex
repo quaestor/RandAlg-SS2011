@@ -1,0 +1,100 @@
+\section{Markov-Ketten und random walks}
+\subsection{Randomisierte Algorithmen für $2$- und $3$-SAT}
+\subsection{\emph{Random walks} auf ungerichteten Graphen und Erreichbarkeit}
+\ohead{16. Juni 2011}
+\begin{defn}
+	Sei $G$ ein ungerichteter Graph. Ein \emph{random walk} auf $G$ ist
+	eine (durch eine Markov-Kette beschriebene) zufällige Reise eines
+	Partikels auf den Knoten von $G$. Ist ein Partikel zu einem Zeitpunkt
+	im Knoten $i$ mit Grad $d(i)$, dann wechselt das Partikel mit
+	Wahrscheinlichkeit jeweils $\frac{1}{d(i)}$ zu einem der $d(i)$
+	Nachbarknoten von $i$.
+\end{defn}
+\paragraph{Beobachtung:} Ein \emph{random walk} ist aperiodisch genau dann,
+wenn $G$ nicht bipartit ist.
+
+\begin{satz}
+	Ein \emph{random walk} auf $G$ (zusammenhängend, aperiodisch)
+	konvergiert gegen die stationäre Verteilung $\pi$ mit $\pi_i =
+	\frac{d(i)}{2\,|E|}$ für alle Knoten $i$.
+\end{satz}
+\begin{proof}
+	\[ \sum \pi_i = \sum \frac{d(i)}{2\,|E|} =
+	\frac{1}{2\,|E|}\,\underbrace{\sum d(i)}_{=2\,|E|} = 1 \]
+	% Sei $M$ die zugehörige Markov-Kette. % taucht nie wieder auf …
+	Sei $\Gamma(i)$ die Menge der Nachbarknoten von $i$.
+	\[ \pi_i = \sum_{j\in\Gamma(i)} \frac{d(j)}{2\,|E|}\,\frac{1}{d(j)} =
+	\frac{1}{2\,|E|}\,\sum_{j\in\Gamma(i)} 1 = \frac{d(i)}{2\,|E|} \]
+\end{proof}
+\begin{korr}
+	Sei $h_{i,i}$ die erwartete Zeit, die vergeht, um von $i$ wieder nach
+	$i$ zurückzukommen. Dann ist
+	\[
+	  h_{i,i} = \frac{2\,|E|}{d(i)}
+	\]
+\end{korr}
+\begin{lemm}
+	Entsprechend ist $h_{i,j}$ die erwartete Anzahl von Schritten, um von
+	$i$ nach $j$ zu kommen, für $\{i,j\} \in E$, und es gilt
+	\[
+	  h_{i,j} < 2\,|E|
+	\]
+\end{lemm}
+\begin{proof}
+	\[
+	  \frac{2\,|E|}{d(j)} = h_{j,j} =
+	  \frac{1}{d(j)}\,\sum_{k\in\Gamma(j)}\left(1+h_{k,j}\right)
+	  \ \ \Rightarrow\ \ 2\,|E| = \sum_{k\in\Gamma(j)} \left(1+ h_{k,j}\right) >
+	  h_{i,j} \qedhere
+	\]
+\end{proof}
+\begin{defn}
+	Die \emph{CoverTime} eines Graphen ist das Maximum über alle Knoten $i$
+	der erwarteten Zeit, um alle Knoten von $G$, gestartet bei $i$, zu
+	besuchen.
+\end{defn}
+\begin{satz}
+	Die \emph{CoverTime} von $G$ ist kleiner als $4\cdot|V|\cdot|E|$.
+\end{satz}
+\begin{proof}
+	Wähle einen beliebigen Spannbaum von $G$. In seiner Eigenschaft als
+	Spannbaum hat dieser $|V|-1$ Kanten und damit dauert das Traversieren
+	maximal $2\cdot\left(|V|-1\right)$ Schritte. Das Fortschreiten von
+	einem Knoten $i$ zu einem Nachbarn $j$ dauert wie oben gezeigt weniger
+	als $2\,|E|$ Schritte; es ergibt sich folglich eine obere Grenze von
+	$2\cdot\left(|V|-1\right)\cdot2\,|E| = 4\,|V|\,|E|$.
+\end{proof}
+\paragraph{Anwendung} $s$-$t$-Connectivity. Gegeben ein Graph $G = (V,E)$ und
+zwei Knoten $s, t \in V$, gibt es einen Weg von $s$ nach $t$?
+
+Mittels regulärer Tiefensuche lässt sich diese Frage in $\Theta(n)$ Platz und
+$\mathcal{O}(n^2)$ Zeit beantworten.
+\begin{algorithm}[H]
+	\caption{Algorithmus $s$-$t$-Connectivity}
+	\vspace{0.4cm}
+	\begin{itemize}
+		\setlength{\itemsep}{2pt}
+		\setlength{\parskip}{2pt}
+		\setlength{\parsep}{2pt}
+		\item Starte einen \emph{random walk} bei $s$
+		\item falls er in $4n^3$ Schritten $t$ erreicht hat, gib \glqq
+			ja\grqq\ aus, sonst \glqq nein\grqq
+	\end{itemize}
+\end{algorithm}
+\begin{satz}
+	$s$-$t$-\emph{Connectivity} gibt mit Wahrscheinlichkeit $\frac{1}{2}$
+	die korrekte Antwort und kann sich nur im \glqq nein\grqq-Fall irren.
+\end{satz}
+\begin{proof}
+	Die Anzahl der Kanten in einem einfachen Graphen ist maximal
+	$\binom{n}{2} = \frac{n(n-1)}{2}$. Die \emph{CoverTime} ist somit
+	maximal $2n^3$. Der Algorithmus führt maximal $4n^3$ Schritte aus und
+	es folgt mit der Markov-Ungleichung, dass die Wahrscheinlichkeit einer
+	fehlerhaften Ausgabe von \glqq nein\grqq\ kleiner oder gleich
+	$\frac{1}{2}$ ist.
+	\[
+	  P\left[\text{$s$-$t$-Connectivity gibt \glqq nein\grqq\ aus}\ |\ 
+	  \text{$t$ von $s$ aus erreichbar}\right] \leq \frac{2n^3}{4n^3} =
+	  \frac{1}{2}
+	\]
+\end{proof}
