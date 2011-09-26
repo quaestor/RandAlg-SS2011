@@ -70,7 +70,7 @@ zwei Knoten $s, t \in V$, gibt es einen Weg von $s$ nach $t$?
 Mittels regulärer Tiefensuche lässt sich diese Frage in $\Theta(n)$ Platz und
 $\mathcal{O}(n^2)$ Zeit beantworten.
 \begin{algorithm}[H]
-	\caption{Algorithmus $s$-$t$-Connectivity}
+	\caption{$s$-$t$-Connectivity}
 	\vspace{0.4cm}
 	\begin{itemize}
 		\setlength{\itemsep}{2pt}
@@ -93,7 +93,7 @@ $\mathcal{O}(n^2)$ Zeit beantworten.
 	fehlerhaften Ausgabe von \glqq nein\grqq\ kleiner oder gleich
 	$\frac{1}{2}$ ist.
 	\[
-	  P\left[\text{$s$-$t$-Connectivity gibt \glqq nein\grqq\ aus}\ |\ 
+	  \Pr\left[\text{$s$-$t$-Connectivity gibt \glqq nein\grqq\ aus}\ |\
 	  \text{$t$ von $s$ aus erreichbar}\right] \leq \frac{2n^3}{4n^3} =
 	  \frac{1}{2}
 	\]

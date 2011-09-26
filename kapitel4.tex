@@ -1,3 +1,148 @@
 \section{Die Probabilistische Methode}
+Besitzt kein Objekt aus einer Menge von Objekten eine gewisse Eigenschaft $E$,
+so ist die Wahrscheinlichkeit, dass ein zufällig gewähltes Objekt die
+Eigenschaft $E$ besitzt, gleich null. Im Umkehrschluss muss es Objekte mit der
+Eigenschaft $E$ geben, falls die Wahrscheinlichkeit positiv ist (auch, falls
+diese verschwindend klein ist), oder anders gesagt, falls für ein zufällig
+gewähltes Objekt $A$ gilt, dass
+\[
+  \Pr\left[\,A \text{ besitzt die Eigenschaft } E \text{ nicht}\,\right] < 1.
+\]
 \subsection{Das \emph{max-cut}-Problem}
+Gegeben sei ein zusammenhängender Graph $G=\left(V, E\right)$. Gesucht ist eine
+Partition von $V$ in $A$ und $B$, sodass möglichst viele Kanten zwischen Knoten
+aus $A$ und Knoten aus $B$ verlaufen. Die Anzahl $C\left(A,B\right)$ ist die
+Größe des Schnitts $\left[A,B\right]$.
+
+Die Entscheidungsvariante (\glqq Gibt es einen Schnitt der Größe $k$?\grqq) ist
+$\mathcal{NP}$-vollständig\footnote{\emph{MinCut} ist in $\mathcal{P}$.}.
+
+Im Folgenden sei $|V| = n$ und $|E| = m$.
+
+\begin{satz}
+	Es gibt immer einen Schnitt $\left[A,B\right]$ in $G$ mit $C\left( A,B
+	\right) \geq \frac{m}{2}$.
+\end{satz}
+\begin{proof}
+	Betrachte den folgenden Algorithmus:
+	\begin{algorithm}[H]
+		\caption{RandomCut (\emph{MonteCarlo})}
+		\vspace{0.4cm}
+		\begin{enumerate}
+			\setlength{\itemsep}{2pt}
+			\setlength{\parskip}{2pt}
+			\setlength{\parsep}{2pt}
+			\item \textbf{for $i=1$ to $n$ do}
+			\item[] $\hphantom{for}$ mit Wahrscheinlichkeit
+				$\frac{1}{2}$: lege $v_i$ nach $A$
+			\item[] $\hphantom{for}$ mit Wahrscheinlichkeit
+				$\frac{1}{2}$: lege $v_i$ nach $B$
+			\item[] \textbf{done}
+			\item gib $\left[ A,B \right]$ aus
+		\end{enumerate}
+	\end{algorithm}
+
+	Sei $e_1, e_2, \dots, e_m$ eine beliebige Aufzählung der Kanten aus
+	$E$ und
+	\[
+	  X_j = \begin{cases} 1 & \text{falls $e_i$ über den Schnitt geht} \\ 0 &
+		\text{sonst} \end{cases}
+	\]
+	Dann ist $C(A,B) = \sum_{j=1}^m X_j$ und
+	\[
+	  \Pr[X_j = 1] = \Pr\left[e_j = \{v, w\} \text{ geht über den
+	  Schnitt}\right] = \frac{1}{2},
+	\]
+	da genau $2$ von $4$ Möglichkeiten, $v$ und $w$ auf $A$ und $B$
+	aufzuteilen, zu einer Kante über den Schnitt führen. Für den
+	Erwartungswert ergibt sich
+	\[
+	  \E\left[\,C(A,B)\,\right] = \sum_{j=1}^m E[X_j] =
+	  \sum_{j=1}^m \Pr[X_j = 1] = \sum_{j=1}^m \frac{1}{2} = \frac{m}{2}.
+	\]
+	Da $X$ offensichtlich Werte kleiner als $\frac{m}{2}$ annehmen kann
+	muss es also auch Fälle geben, in denen $X$ Werte größer als
+	$\frac{m}{2}$ annimmt.
+\end{proof}
+\begin{algorithm}[H]
+	\caption{LargeCut (\emph{Las-Vegas})}\label{alg:largecut}
+	\vspace{0.4cm}
+	\begin{enumerate}
+			\setlength{\itemsep}{2pt}
+			\setlength{\parskip}{2pt}
+			\setlength{\parsep}{2pt}
+		\item $t := 0$
+		\item[] \textbf{repeat}
+		\item $\hphantom{repeat}$ $t:=t+1$
+		\item $\hphantom{repeat}$ würfle einen Schnitt $[A,B]$
+		\item[] \textbf{until} $C(A,B) \geq \frac{m}{2}$
+	\end{enumerate}
+\end{algorithm}
+Gesucht ist die erwartete Laufzeit $\E[t]$.
+\[
+p = \Pr\left[\,C(A,B) \geq \frac{m}{2}\,\right]
+\]
+Mit dem Ergebnis des vorigen Beweises ergibt sich
+\begin{align*}
+  \frac{m}{2} &= \E\left[\,C(A,B)\,\right] = \sum_{i=0}^{\infty} i \cdot
+  \Pr\left[C(A,B)=i\right] \\
+  &= \sum_{i \leq \frac{m}{2} - 1} i \cdot \Pr\left[ C(A,B) = i \right] +
+  \sum_{i \geq \frac{m}{2}} i \cdot \Pr\left[ C(A,B) = i \right] \\
+  &\leq \left( 1-p \right)\left( \frac{m}{2}-1 \right) + p\cdot m
+\end{align*}
+und folglich
+\[
+  p \geq \frac{1}{\frac{m}{2} + 1}.
+\]
+Der Erwartungswert ist also (geometrische Verteilung)
+\[
+  \E[t] \leq \frac{m}{2} + 1
+\]
+und  die gesamte Laufzeit von \autoref{alg:largecut} ist
+\[
+  \mathcal{O}\left( \left( \frac{m}{2} + 1 \right)\cdot(n+m) \right) =
+  \mathcal{O}(m^2)
+\]
+
 \subsection{\emph{Independent sets} und \emph{Sample \& Modify}}
+Gegeben sei ein Graph $G = \left( V,E \right)$. Eine Teilmenge $U$ von $V$
+heißt unabhängig, falls es keine Kante in $E$ gibt, die Knoten aus $U$
+verbindet.
+
+Gesucht ist eine möglichst große Menge $U$. Die Entscheidungsvariante ist
+$\mathcal{NP}$-vollständig. Wie zuvor sei $|V|=n$, $|E|=m$.
+
+\begin{satz}
+	$G$ hat eine unabhängige Menge $U$ mit $|U| \geq \frac{n^2}{4m}$.
+\end{satz}
+\begin{proof}
+	Sei $d$ der durchschnittliche Knotengrad: $\displaystyle d= \frac{2m}{n}$
+	\begin{algorithm}[H]
+		\caption{}
+		\vspace{0.4cm}
+		\begin{enumerate}
+			\setlength{\itemsep}{2pt}
+			\setlength{\parskip}{2pt}
+			\setlength{\parsep}{2pt}
+		\item \textbf{for $i=1$ to $n$ do} \hfill \glqq\emph{sample}\grqq
+		\item[] $\hphantom{for}$ lösche $v_i$ und seine Kanten aus $G$
+			mit Wahrscheinlichkeit $1-\frac{1}{d}$
+		\item Für jede übrig gebliebene Kante \hfill \glqq\emph{modify}\grqq
+		\item[] $\hphantom{for}$ lösche sie und einen ihrer Knoten
+		\end{enumerate}
+	\end{algorithm}
+	Die übrig gebliebenen Knoten bilden eine unabhängige Menge. Wie viele
+	Knoten bleiben in Schritt $1$ übrig? Sei $X$ deren Zahl: $\E[X] =
+	\frac{n}{d}$.
+
+	Sei $Y$ die Anzahl der Kanten, die Schritt $1$ überleben. Eine Kante
+	überlebt genau dann, wenn ihre beiden Knoten überleben:
+	\[
+	  \E[Y] = \frac{1}{d}\frac{1}{d}\cdot m =
+	  \frac{1}{d^2}\cdot\frac{n\,d}{2} = \frac{n}{2d}
+	\]
+	Der erwartete Wert für die Größe der Ausgabe ist damit
+	\[
+	  E[X-Y] = \frac{n}{d} - \frac{n}{2d} = \frac{n^2}{4m}.
+	\]
+\end{proof}

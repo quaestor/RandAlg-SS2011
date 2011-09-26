@@ -10,7 +10,7 @@ Wir interessieren uns für die maximale Last
 \]
 d.h. die Anzahl der Bälle in der vollsten Kiste.
 \[
-  E[L_i] = 1, \quad \text{für } n \geq 2 \quad E[L] > 1
+  \E[L_i] = 1, \quad \text{für } n \geq 2 \quad \E[L] > 1
 \]
 
 Beachte: es gibt einen Unterschied zwischen der erwarteten maximalen Last und
@@ -22,7 +22,7 @@ der maximalen erwarteten Last!
 	Eine Schranke der Form $X = \mathcal{O}\left(f(n)\right)$ gilt
 	\emph{m.h.W.} (mit hoher Wahrscheinlichkeit), wenn gilt:
 	\[ \forall\,d > 0 \ \exists\,c > 0 \ \exists\,n_0 \geq 1 \ \forall\,n
-	\geq n_0 : P\left[ X \geq c \cdot f(n)\right] \leq \frac{1}{n^d} \]
+	\geq n_0 : \Pr\left[ X \geq c \cdot f(n)\right] \leq \frac{1}{n^d} \]
 \end{defn}
 \begin{satz}
 	Bei $n$ Bällen und $n$ Kisten gilt:
@@ -41,10 +41,10 @@ der maximalen erwarteten Last!
 	\]
 
 	\begin{align*}
-	  P[L_i \geq k] &= P\left[ \exists\,J \subseteq \{1, \dots, n\}, |J| =
+	  \Pr[L_i \geq k] &= \Pr\left[ \exists\,J \subseteq \{1, \dots, n\}, |J| =
 	  k : \forall\,j \in J : X_i^j = 1 \right] \\
 	  &\leq \sum_{\substack{J\subseteq\{1,\dots,n\}\\|J|=k}}
-	  P\left[\forall\,j \in J : X_i^j = 1\right] \\
+	  \Pr\left[\forall\,j \in J : X_i^j = 1\right] \\
 	  &= \sum_{\substack{J\subseteq\{1,\dots,n\}\\|J|=k}}
 	  \left(\frac{1}{n}\right)^k = \binom{n}{k} \cdot \left(\frac{1}{n}\right)^k \\
 	  \intertext{Mit $\left(\frac{n}{k}\right)^k \leq \binom{n}{k} \leq
@@ -55,7 +55,7 @@ der maximalen erwarteten Last!
 
 	Es gilt nun noch zu zeigen, dass für jedes feste $d > 0$ ein $k =
 	\mathcal{O}\left(\frac{\log n}{\log \log n}\right)$ existiert mit
-	$P[L_i \geq k] \leq \frac{1}{n^d}$:
+	$\Pr[L_i \geq k] \leq \frac{1}{n^d}$:
 	\[
 	  k = \max \left\{ 2 d \cdot \frac{\log n}{\log \log n}, e \cdot
 	  \sqrt{\log n} \right\} = \mathcal{O}\left(\frac{\log n}{\log \log
@@ -64,7 +64,7 @@ der maximalen erwarteten Last!
 	Der Logarithmus sei o.B.d.A.\ zur Basis $2$ gewählt. Mit dieser Waho
 	von $k$ ergibt sich aus der vorherigen Abschätzung
 	\begin{align*}
-		P[L_i \geq k] &\leq \left(\frac{e}{k}\right)^k \leq \left(
+		\Pr[L_i \geq k] &\leq \left(\frac{e}{k}\right)^k \leq \left(
 		\frac{1}{\sqrt{\log n}} \right)^{\frac{2\,d\,\log n}{\log \log
 		n}} \\
 		&= \left( \frac{1}{\log n} \right)^{\frac{d\,\log
@@ -74,8 +74,8 @@ der maximalen erwarteten Last!
 	
 	Damit gilt für $L$:
 	\[
-	  P[L \geq k] = P\left[ \exists\,i : L_i \geq k \right] \leq
-	  \sum_{i=1}^n P[L_i \geq k] \leq n \cdot \frac{1}{n^d} =
+	  \Pr[L \geq k] = \Pr\left[ \exists\,i : L_i \geq k \right] \leq
+	  \sum_{i=1}^n \Pr[L_i \geq k] \leq n \cdot \frac{1}{n^d} =
 	  \frac{1}{n^{d-1}}
 	\]
 
@@ -92,11 +92,11 @@ besteht, wie scharf man (m.h.W.) vom Erwartungswert abweicht.
 \begin{satz}[Markov-Ungleichung]
 	Sei $X$ eine nichtnegative Zufallsvariable. Dann gilt für alle $t > 0$:
 	\[
-	  P[X \geq t] \leq \frac{E[X]}{t}.
+	  \Pr[X \geq t] \leq \frac{\E[X]}{t}.
 	\]
-	Mit $t = c \cdot E[X]$ für $c \geq 1$ ergibt sich
+	Mit $t = c \cdot \E[X]$ für $c \geq 1$ ergibt sich
 	\[
-	  P\left[X \geq c \cdot E[X]\right] \leq \frac{1}{c}.
+	  \Pr\left[X \geq c \cdot \E[X]\right] \leq \frac{1}{c}.
 	\]
 \end{satz}
 \begin{proof}
@@ -107,14 +107,14 @@ besteht, wie scharf man (m.h.W.) vom Erwartungswert abweicht.
 	\]
 	Dann ist
 	\[
-	  E[\tau(X)] = P[\tau(X)=1] = P\left[\frac{X}{t} \geq 1\right] = P[X
-	  \geq t] \leq E\left[\frac{X}{t}\right] = \frac{1}{t} E[X].
+	  \E[\tau(X)] = \Pr[\tau(X)=1] = \Pr\left[\frac{X}{t} \geq 1\right] = \Pr[X
+	  \geq t] \leq E\left[\frac{X}{t}\right] = \frac{1}{t} \E[X].
 	\]
 \end{proof}
 \begin{defn}
 	Sei $X : \Omega \mapsto \mathbb{R}$ eine Zufallsvariable. Die \emph{Varianz} von $X$ ist
 	\[
-	  Var[X] = E\left[\left(X - E[X]\right)^2 \right] = E\left[X^2\right] - E[X]^2
+	  Var[X] = E\left[\left(X - \E[X]\right)^2 \right] = E\left[X^2\right] - \E[X]^2
 	\]
 	Die \emph{Standardabweichung} $\sigma$ ist die Quadratwurzel der \emph{Varianz}:
 	\[
@@ -127,83 +127,83 @@ besteht, wie scharf man (m.h.W.) vom Erwartungswert abweicht.
 		\item $Var[X+Y] = Var[x] + Var[Y]$
 		\item $Var[c\cdot X] = c^2 Var[X]$
 		\item Ist $X$ eine $0$-$1$-Zufallsvariable, so ist $Var[X] =
-			E[X] \cdot \left(1 - E[X]\right)$
+			\E[X] \cdot \left(1 - \E[X]\right)$
 	\end{enumerate}
 \end{satz}
 \begin{satz}[Chebychev]
 	Sei $X$ eine Zufallsvariable. Für jedes $\varepsilon > 0$ gilt:
 	\[
-	  P\left[\,|X-E[X]| \geq \varepsilon\,\right] \leq \frac{Var[X]}{\varepsilon^2}
+	  \Pr\left[\,|X-\E[X]| \geq \varepsilon\,\right] \leq \frac{Var[X]}{\varepsilon^2}
 	\]
 	\begin{equation*}
 		\begin{array}{ll}
 		\varepsilon := k\,\sqrt{Var[X]} = k\,\sigma[X] &\Rightarrow
-		P\left[\,|X - E[X]| \geq k\,\sigma[X]\,\right] \leq
+		\Pr\left[\,|X - \E[X]| \geq k\,\sigma[X]\,\right] \leq
 		\frac{1}{k^2} \\
-		\varepsilon := \varepsilon^\prime\,E[X] &\Rightarrow P\left[\,|X-E[X]| \geq
-		\varepsilon^\prime E[X]\,\right] \leq
-		\frac{1}{\left(\varepsilon^\prime\right)^2}\cdot\frac{Var[X]}{E[X]^2}
+		\varepsilon := \varepsilon^\prime\,\E[X] &\Rightarrow \Pr\left[\,|X-\E[X]| \geq
+		\varepsilon^\prime \E[X]\,\right] \leq
+		\frac{1}{\left(\varepsilon^\prime\right)^2}\cdot\frac{Var[X]}{\E[X]^2}
 		\end{array}
 	\end{equation*}
 \end{satz}
 \begin{proof}
 	\begin{align*}
-	  Var[X] &= \sum_{\omega \in \Omega} \left(X(\omega) - E[X]\right)^2
-	  \cdot P[\omega] \\ 
+	  Var[X] &= \sum_{\omega \in \Omega} \left(X(\omega) - \E[X]\right)^2
+	  \cdot \Pr[\omega] \\ 
 	  &\geq
-	  \sum_{\substack{\omega\in\Omega\\\left(X(\omega)-E[X]\right)^2\geq\varepsilon^2}}
-	  \left(X(\omega) - E[X]\right)^2 \cdot P[\omega]\\
-	  &\geq \sum_{\substack{\omega\in\Omega\\|X(\omega)-E[X]|\geq\varepsilon}}
-	  \varepsilon^2 \cdot P[\omega] = \varepsilon^2 P\left[\,|X-E[X]| \geq
+	  \sum_{\substack{\omega\in\Omega\\\left(X(\omega)-\E[X]\right)^2\geq\varepsilon^2}}
+	  \left(X(\omega) - \E[X]\right)^2 \cdot \Pr[\omega]\\
+	  &\geq \sum_{\substack{\omega\in\Omega\\|X(\omega)-\E[X]|\geq\varepsilon}}
+	  \varepsilon^2 \cdot \Pr[\omega] = \varepsilon^2 \Pr\left[\,|X-\E[X]| \geq
 	  \varepsilon\,\right]
 	\end{align*}
 \end{proof}
 \begin{satz}[Chernoff-Schranken]
 	Seien $X_1, \dots, X_n$ unabhängige $0$-$1$-Zufallsvariablen. Dann gilt
-	für $X = \sum_{i=1}^n X_i$ und $E[X] = \sum_{i=1}^n P[X_i = 1]$ und
+	für $X = \sum_{i=1}^n X_i$ und $\E[X] = \sum_{i=1}^n \Pr[X_i = 1]$ und
 	jedes $\varepsilon, \ 0 < \varepsilon \leq 1$:
 	\begin{enumerate}[(a)]
-		\item $P\left[\,X < (1-\varepsilon)\,E[X]\,\right] <
-			e^{-E[X]\cdot\frac{\varepsilon^2}{2}}$
-		\item $P\left[\,X > (1+\varepsilon)\,E[X]\,\right] <
-			e^{-E[X]\cdot\frac{\varepsilon^2}{4}}$
-		\item $P\left[\,|X-E[X]| \leq \varepsilon\,E[X]\,\right] \geq 1 -
-			2\,e^{-E[X]\cdot\frac{\varepsilon^2}{4}}$
+		\item $\Pr\left[\,X < (1-\varepsilon)\,\E[X]\,\right] <
+			e^{-\E[X]\cdot\frac{\varepsilon^2}{2}}$
+		\item $\Pr\left[\,X > (1+\varepsilon)\,\E[X]\,\right] <
+			e^{-\E[X]\cdot\frac{\varepsilon^2}{4}}$
+		\item $\Pr\left[\,|X-\E[X]| \leq \varepsilon\,\E[X]\,\right] \geq 1 -
+			2\,e^{-\E[X]\cdot\frac{\varepsilon^2}{4}}$
 	\end{enumerate}
 \end{satz}
 \begin{proof}
 	\begin{enumerate}[(a)]
 		\item Für jedes $t > 0$ gilt:
 			\begin{align*}
-			  P&\left[\,X < (1-\varepsilon)\,E[X]\,\right] =
-			  P\left[\,-X > -(1-\varepsilon)\,E[X]\,\right] =
-			  P\left[e^{-t\,X}>e^{-t\,(1-\varepsilon)\,E[X]}\,\right]\\
+			  P&\left[\,X < (1-\varepsilon)\,\E[X]\,\right] =
+			  \Pr\left[\,-X > -(1-\varepsilon)\,\E[X]\,\right] =
+			  \Pr\left[e^{-t\,X}>e^{-t\,(1-\varepsilon)\,\E[X]}\,\right]\\
 			  \intertext{Mit der Markov-Ungleichung und der
 			  Unabhängigkeit der $X_i$ ergibt sich weiter}
 			  &\leq
-			  \frac{E\left[e^{-t\,X}\right]}{e^{-t\,(1-\varepsilon)\,E[X]}}
-			  = e^{t\,(1-\varepsilon)\,E[X]}\cdot
+			  \frac{E\left[e^{-t\,X}\right]}{e^{-t\,(1-\varepsilon)\,\E[X]}}
+			  = e^{t\,(1-\varepsilon)\,\E[X]}\cdot
 			  E\left[\,\prod_{j=1}^{n} e^{-t\,X_j}\,\right] =
-			  e^{t\,(1-\varepsilon)\,E[X]}\,\prod_{j=1}^{n}
+			  e^{t\,(1-\varepsilon)\,\E[X]}\,\prod_{j=1}^{n}
 			  E\left[e^{-t\,X_j}\right]\\
-			  &= e^{t\,(1-\varepsilon)\,E[X]}\,\prod_{i=1}^{n}
-			  \left(P[X_i=1]\cdot e^{-t} +
-			  \left(1-P[X_i=1]\right)\, e^0\right) \\
-			  &= e^{t\,(1-\varepsilon)\,E[X]}\,\prod_{i=1}^{n}
-			  \left(1 + P[X_i=1]\cdot(e^{-t} - 1)\right) \\
+			  &= e^{t\,(1-\varepsilon)\,\E[X]}\,\prod_{i=1}^{n}
+			  \left(\Pr[X_i=1]\cdot e^{-t} +
+			  \left(1-\Pr[X_i=1]\right)\, e^0\right) \\
+			  &= e^{t\,(1-\varepsilon)\,\E[X]}\,\prod_{i=1}^{n}
+			  \left(1 + \Pr[X_i=1]\cdot(e^{-t} - 1)\right) \\
 			  \intertext{Wähle $t=-\ln(1-\varepsilon)$ und benutze,
 			  dass $1-x\leq e^{-x}$}
-			  &\leq (1-\varepsilon)^{-(1-\varepsilon)\,E[X]}\,
-			  \prod_{i=1}^{n}\left(1-\varepsilon\,P[X_i=1]\right) \\
-			  &\leq (1-\varepsilon)^{-(1-\varepsilon)\,E[X]}\,
-			  \prod_{i=1}^{n} e^{-\varepsilon\,P[X_i=1]} \\
-			  &= (1-\varepsilon)^{-(1-\varepsilon)\,E[X]}\,
-			  e^{\sum_{i=1}^{n} -\varepsilon\,P[X_i=1]} \\
+			  &\leq (1-\varepsilon)^{-(1-\varepsilon)\,\E[X]}\,
+			  \prod_{i=1}^{n}\left(1-\varepsilon\,\Pr[X_i=1]\right) \\
+			  &\leq (1-\varepsilon)^{-(1-\varepsilon)\,\E[X]}\,
+			  \prod_{i=1}^{n} e^{-\varepsilon\,\Pr[X_i=1]} \\
+			  &= (1-\varepsilon)^{-(1-\varepsilon)\,\E[X]}\,
+			  e^{\sum_{i=1}^{n} -\varepsilon\,\Pr[X_i=1]} \\
 			  \intertext{für $0<\varepsilon\leq 1$ ist
 			  $(1-\varepsilon)^{-(1-\varepsilon)} < e^{\varepsilon
 			  - \frac{\varepsilon^2}{2}}$ (Anfang der
 			  McLaurin-Reihe)}
-			  &< e^{-E[X]\,\frac{\varepsilon^2}{2}}
+			  &< e^{-\E[X]\,\frac{\varepsilon^2}{2}}
 			\end{align*}
 		\item analog zu (a)
 		\item Folgerung aus (a) und (b)

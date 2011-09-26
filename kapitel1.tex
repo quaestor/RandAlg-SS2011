@@ -2,7 +2,7 @@
 \section{Beispiele (\glqq zum Warmwerden\grqq)}
 \subsection{Randomized Quicksort}
 \begin{algorithm}
-	\caption{Algorithmus randQS ($S$: Array aus $n$ verschiedenen Zahlen)}
+	\caption{randQS ($S$: Array aus $n$ verschiedenen Zahlen)}
 	\vspace{0.4cm}
 	\begin{enumerate}
 		\setlength{\itemsep}{2pt}
@@ -42,9 +42,9 @@ Zufallsvariable:
 	  0 & \text{sonst} \end{cases}
 \]
 Die Gesamtzahl der Vergleiche ist $\sum_{i=1}^n \sum_{j=i+1}^n X_{ij}$.
-Definiere $p_{ij} = P\left[X_{ij} = 1\right]$. Der Erwartungswert ist damit
-wegen $E\left[X_{ij}\right] = 0 \cdot P\left[X_{ij} = 0\right] + 1 \cdot
-P\left[X_{ij} = 1\right]$ gleich
+Definiere $p_{ij} = \Pr\left[X_{ij} = 1\right]$. Der Erwartungswert ist damit
+wegen $E\left[X_{ij}\right] = 0 \cdot \Pr\left[X_{ij} = 0\right] + 1 \cdot
+\Pr\left[X_{ij} = 1\right]$ gleich
 \[
   E\left[\sum_{i=1}^n \sum_{j=i+1}^n X_{ij}\right] = \sum_{i=1}^n
   \sum_{j=i+1}^n E\left[X_{ij}\right] = \sum_{i<j} p_{ij}.
@@ -83,8 +83,8 @@ Pivotelement gewählt werden:
   $s_i$-Knoten oder umgekehrt} \\ 0 & \text{sonst} \end{cases}
 \]
 \begin{align*}
-  \Rightarrow p_{ij} &= P\left[s_i \text{ wird als erstes Pivotelement aus $S_{ij}$ gewählt}\right] \\
-  &+ P\left[s_j \text{ wird als erstes Pivotelement aus $S_{ij}$ gewählt}\right] = \frac{2}{j-i+1}
+  \Rightarrow p_{ij} &= \Pr\left[s_i \text{ wird als erstes Pivotelement aus $S_{ij}$ gewählt}\right] \\
+  &+ \Pr\left[s_j \text{ wird als erstes Pivotelement aus $S_{ij}$ gewählt}\right] = \frac{2}{j-i+1}
 \end{align*}
 Unter Verwendung der Eigenschaft der harmonischen Reihe $\ln(i+1) \leq H_i =
 \sum_{k=1}^i \frac{1}{k} \leq 1 + \ln i$ ergibt sich für den Erwartungswert
@@ -168,7 +168,7 @@ Unter Verwendung der Eigenschaft der harmonischen Reihe $\ln(i+1) \leq H_i =
 	Ersetze $x$ und $y$ durch einen neuen Knoten $z$, lösche alle Kanten zwischen $x$ und $y$ und ersetze alle übrigen Kanten $\{x, v\}$ bzw. $\{y, v\}$ durch eine neue Kante $\{z, v\}$.
 \end{defn}
 \begin{algorithm}
-	\caption{Algorithmus contract ($G$: Multigraph)}
+	\caption{contract ($G$: Multigraph)}
 	\vspace{0.4cm}
 	\begin{enumerate}
 		\setlength{\itemsep}{2pt}
@@ -196,15 +196,15 @@ Sei $K$ ein beliebiger \emph{min cut} in $G$. $K$ überlebt die Folge der
 Kontraktionen genau dann, wenn keine der Kanten aus $K$ zur Kontraktion (in
 jeder Iteration) ausgewählt wurde.
 \[
-  P\left[C \text{ ist } min\ cut\right] \geq P\left[C = K\right] = P\left[
+  \Pr\left[C \text{ ist } min\ cut\right] \geq \Pr\left[C = K\right] = \Pr\left[
   \bigwedge_{1\leq i\leq n-2} \left(e_i \not\in K\right)\right] =
-  \prod_{i=1}^{n-2} P\left[e_i \not\in K\ \Big|\ \bigwedge_{1\leq j < i} \left(e_j
+  \prod_{i=1}^{n-2} \Pr\left[e_i \not\in K\ \Big|\ \bigwedge_{1\leq j < i} \left(e_j
   \not\in K\right)\right]
 \]
 
 \begin{lemm}
 	Für $1 \leq i \leq n-2$ gilt:
-	\[ P\left[e_i \in K | \bigwedge_{1\leq j < i} \left(e_j \not\in K\right) \right] \leq \frac{2}{n-i+1} \]
+	\[ \Pr\left[e_i \in K | \bigwedge_{1\leq j < i} \left(e_j \not\in K\right) \right] \leq \frac{2}{n-i+1} \]
 \end{lemm}
 \begin{proof} Sei $k = |K|$ sowie $n = |V|$.
 	\begin{itemize}
@@ -212,15 +212,15 @@ jeder Iteration) ausgewählt wurde.
 			\[ \frac{1}{2} \cdot |K| \cdot |V| \leq |E| \]
 			Für die Wahrscheinlichkeit, dass im ersten Schritt eine
 			der Kanten aus $K$ gewählt wird, gilt also
-			\[ P\left[e_1 \in K\right] \leq
+			\[ \Pr\left[e_1 \in K\right] \leq
 			\frac{|K|}{\frac{1}{2}\cdot |K| \cdot |V|} =
 			\frac{2}{n} \]
 		\item $H_1$ hat $n-1$ Knoten, analog gilt also
-			\[ P\left[e_2 \in K\ |\ e_1 \not\in K\right] \leq
+			\[ \Pr\left[e_2 \in K\ |\ e_1 \not\in K\right] \leq
 			\frac{|K|}{\frac{1}{2}\cdot |K| \cdot (n-1)} =
 			\frac{2}{n-1} \]
 		\item Für jedes $i$ mit $1 \leq i \leq n-2$ gilt somit die Ungleichung
-			\[ P\left[e_i \in K\ \Big|\ \bigwedge_{j=1}^{i-1}
+			\[ \Pr\left[e_i \in K\ \Big|\ \bigwedge_{j=1}^{i-1}
 			\left(e_j \not\in K\right)\right] \leq
 			\frac{|K|}{\frac{1}{2}\cdot |K| \cdot
 			\left(n-(i-1)\right)} = \frac{2}{n-i+1} \]
@@ -230,7 +230,7 @@ jeder Iteration) ausgewählt wurde.
 Damit lässt sich nun die Wahrscheinlichkeit abschätzen, dass $C$ (die Ausgabe
 des \emph{contract}-Algorithmus) ein \emph{min cut} ist:
 \[
-  P\left[ C \text{ ist } min\ cut\right] \geq \prod_{1\leq i \leq n-2}
+  \Pr\left[ C \text{ ist } min\ cut\right] \geq \prod_{1\leq i \leq n-2}
   \left(1-\frac{2}{n-i+1}\right) = \prod_{i=1}^{n-2} \frac{n-i-1}{n-i+1} = \frac{2}{n(n-1)}
 \]
 
@@ -293,8 +293,8 @@ Dies ist eine Gleichung, die nach $v_j$ aufgelöst werden kann (da $d_{i,j}
 \not= 0$) und damit genau eine Lösung hat. Der Algorithmus hat zwei
 Möglichkeiten zur Wahl von $v_j$.
 \[
-  P\left[ A\cdot B \cdot v = C \cdot v \right] = P\left[ \left(A\cdot B -
-  C\right) v = 0 \right] = P\left[ D \cdot v = 0 \right] \leq \frac{1}{2}
+  \Pr\left[ A\cdot B \cdot v = C \cdot v \right] = \Pr\left[ \left(A\cdot B -
+  C\right) v = 0 \right] = \Pr\left[ D \cdot v = 0 \right] \leq \frac{1}{2}
 \]
 
 Dies bedeutet, dass eine unerwünschte Ausgabe von \glqq sind gleich\grqq mit
@@ -302,6 +302,6 @@ Wahrscheinlichkeit kleiner $\frac{1}{2}$ auftritt (bei Gleichheit wird immer
 korrekt \glqq sind gleich\grqq\ ausgegeben). Nach $c$-maliger Ausführung des
 Algorithmus gilt
 \[
-  P\left[ \text{$c$-fache Wiederholung zeigt nicht $A\cdot B \not= C$} \right]
-  \leq \left(\frac{1}{2}\right)^c
+  \Pr\left[ \text{$c$-fache Wiederholung zeigt nicht $A\cdot B \not= C$}
+  \right] \leq \left(\frac{1}{2}\right)^c
 \]
