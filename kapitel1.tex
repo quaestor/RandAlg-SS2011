@@ -208,22 +208,31 @@ jeder Iteration) ausgewählt wurde.
 \end{lemm}
 \begin{proof} Sei $k = |K|$ sowie $n = |V|$.
 	\begin{itemize}
-		\item Jeder Knoten des Eingabegraphen hat mindestens Grad $k$:
-			\[ \frac{1}{2} \cdot |K| \cdot |V| \leq |E| \]
+		\item Jeder Knoten des Eingabegraphen hat mindestens Grad $k$
+			(da $K$ \emph{min cut}):
+			\[
+			  \frac{1}{2} \cdot |K| \cdot |V| \leq |E|
+			\]
 			Für die Wahrscheinlichkeit, dass im ersten Schritt eine
 			der Kanten aus $K$ gewählt wird, gilt also
-			\[ \Pr\left[e_1 \in K\right] \leq
-			\frac{|K|}{\frac{1}{2}\cdot |K| \cdot |V|} =
-			\frac{2}{n} \]
+			\[
+			  \Pr\left[e_1 \in K\right] \leq
+			  \frac{|K|}{\frac{1}{2}\cdot |K| \cdot |V|} =
+			  \frac{2}{n}
+			\]
 		\item $H_1$ hat $n-1$ Knoten, analog gilt also
-			\[ \Pr\left[e_2 \in K\ |\ e_1 \not\in K\right] \leq
-			\frac{|K|}{\frac{1}{2}\cdot |K| \cdot (n-1)} =
-			\frac{2}{n-1} \]
+			\[
+			  \Pr\left[e_2 \in K\ |\ e_1 \not\in K\right] \leq
+			  \frac{|K|}{\frac{1}{2}\cdot |K| \cdot (n-1)} =
+			  \frac{2}{n-1}
+			\]
 		\item Für jedes $i$ mit $1 \leq i \leq n-2$ gilt somit die Ungleichung
-			\[ \Pr\left[e_i \in K\ \Big|\ \bigwedge_{j=1}^{i-1}
-			\left(e_j \not\in K\right)\right] \leq
-			\frac{|K|}{\frac{1}{2}\cdot |K| \cdot
-			\left(n-(i-1)\right)} = \frac{2}{n-i+1} \]
+			\[
+			  \Pr\left[e_i \in K\ \Big|\ \bigwedge_{j=1}^{i-1}
+			  \left(e_j \not\in K\right)\right] \leq
+			  \frac{|K|}{\frac{1}{2}\cdot |K| \cdot
+			  \left(n-(i-1)\right)} = \frac{2}{n-i+1}
+			\]
 	\end{itemize}
 \end{proof}
 
@@ -244,7 +253,9 @@ Mal (für beliebige Konstante $c$) und gib das beste $C$ aus.
 
 Die Wahrscheinlichkeit, dass kein \emph{min cut} gefunden wurde, ist:
 \[
-  \left(1-\frac{2}{n(n-1)}\right)^{\frac{1}{2}c\,n(n-1)\,\ln n} \leq e^{-c\,\ln n} = \frac{1}{n^c}
+  \left(1-\frac{2}{n(n-1)}\right)^{\frac{1}{2}c\,n(n-1)\,\ln n} =
+  \left(\left(1+\frac{-2}{n(n-1)}\right)^{n(n-1)}\right)^{\frac{1}{2}c\,\ln n}
+  \leq e^{-c\,\ln n} = \frac{1}{n^c}
 \]
 
 \subsection{Verifikation von Matrix-Produkten}
@@ -297,7 +308,7 @@ Möglichkeiten zur Wahl von $v_j$.
   C\right) v = 0 \right] = \Pr\left[ D \cdot v = 0 \right] \leq \frac{1}{2}
 \]
 
-Dies bedeutet, dass eine unerwünschte Ausgabe von \glqq sind gleich\grqq mit
+Dies bedeutet, dass eine unerwünschte Ausgabe von \glqq sind gleich\grqq\ mit
 Wahrscheinlichkeit kleiner $\frac{1}{2}$ auftritt (bei Gleichheit wird immer
 korrekt \glqq sind gleich\grqq\ ausgegeben). Nach $c$-maliger Ausführung des
 Algorithmus gilt

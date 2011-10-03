@@ -61,7 +61,7 @@ der maximalen erwarteten Last!
 	  \sqrt{\log n} \right\} = \mathcal{O}\left(\frac{\log n}{\log \log
 	  n}\right).
 	\]
-	Der Logarithmus sei o.B.d.A.\ zur Basis $2$ gewählt. Mit dieser Waho
+	Der Logarithmus sei o.B.d.A.\ zur Basis $2$ gewählt. Mit dieser Wahl
 	von $k$ ergibt sich aus der vorherigen Abschätzung
 	\begin{align*}
 		\Pr[L_i \geq k] &\leq \left(\frac{e}{k}\right)^k \leq \left(
@@ -114,41 +114,41 @@ besteht, wie scharf man (m.h.W.) vom Erwartungswert abweicht.
 \begin{defn}
 	Sei $X : \Omega \mapsto \mathbb{R}$ eine Zufallsvariable. Die \emph{Varianz} von $X$ ist
 	\[
-	  Var[X] = E\left[\left(X - \E[X]\right)^2 \right] = E\left[X^2\right] - \E[X]^2
+	  \Var[X] = E\left[\left(X - \E[X]\right)^2 \right] = E\left[X^2\right] - \E[X]^2
 	\]
 	Die \emph{Standardabweichung} $\sigma$ ist die Quadratwurzel der \emph{Varianz}:
 	\[
-	  \sigma[X] = \sqrt{Var[X]}
+	  \sigma[X] = \sqrt{\Var[X]}
 	\]
 \end{defn}
 \begin{satz}[Rechenregeln für die Varianz]
 	Seien $X$ und $Y$ unabhängige Zufallsvariablen und $c$ eine beliebige Konstante.
 	\begin{enumerate}[(a)]
-		\item $Var[X+Y] = Var[x] + Var[Y]$
-		\item $Var[c\cdot X] = c^2 Var[X]$
-		\item Ist $X$ eine $0$-$1$-Zufallsvariable, so ist $Var[X] =
+		\item $\Var[X+Y] = \Var[x] + \Var[Y]$
+		\item $\Var[c\cdot X] = c^2 \Var[X]$
+		\item Ist $X$ eine $0$-$1$-Zufallsvariable, so ist $\Var[X] =
 			\E[X] \cdot \left(1 - \E[X]\right)$
 	\end{enumerate}
 \end{satz}
 \begin{satz}[Chebychev]
 	Sei $X$ eine Zufallsvariable. Für jedes $\varepsilon > 0$ gilt:
 	\[
-	  \Pr\left[\,|X-\E[X]| \geq \varepsilon\,\right] \leq \frac{Var[X]}{\varepsilon^2}
+	  \Pr\left[\,|X-\E[X]| \geq \varepsilon\,\right] \leq \frac{\Var[X]}{\varepsilon^2}
 	\]
 	\begin{equation*}
 		\begin{array}{ll}
-		\varepsilon := k\,\sqrt{Var[X]} = k\,\sigma[X] &\Rightarrow
+		\varepsilon := k\,\sqrt{\Var[X]} = k\,\sigma[X] &\Rightarrow
 		\Pr\left[\,|X - \E[X]| \geq k\,\sigma[X]\,\right] \leq
 		\frac{1}{k^2} \\
 		\varepsilon := \varepsilon^\prime\,\E[X] &\Rightarrow \Pr\left[\,|X-\E[X]| \geq
 		\varepsilon^\prime \E[X]\,\right] \leq
-		\frac{1}{\left(\varepsilon^\prime\right)^2}\cdot\frac{Var[X]}{\E[X]^2}
+		\frac{1}{\left(\varepsilon^\prime\right)^2}\cdot\frac{\Var[X]}{\E[X]^2}
 		\end{array}
 	\end{equation*}
 \end{satz}
 \begin{proof}
 	\begin{align*}
-	  Var[X] &= \sum_{\omega \in \Omega} \left(X(\omega) - \E[X]\right)^2
+	  \Var[X] &= \sum_{\omega \in \Omega} \left(X(\omega) - \E[X]\right)^2
 	  \cdot \Pr[\omega] \\ 
 	  &\geq
 	  \sum_{\substack{\omega\in\Omega\\\left(X(\omega)-\E[X]\right)^2\geq\varepsilon^2}}
